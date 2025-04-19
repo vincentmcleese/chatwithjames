@@ -9,7 +9,7 @@ import React, {
 } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Carrot, Send, Cat } from "lucide-react";
+import { Send, Cat } from "lucide-react";
 
 interface Message {
   role: "user" | "assistant";
