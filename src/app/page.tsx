@@ -2,8 +2,8 @@
 
 import { useState, useRef } from "react";
 import Chat from "@/components/Chat";
-import VeggieMeter from "@/components/VeggieMeter";
-import { Carrot } from "lucide-react";
+import TreatMeter from "@/components/TreatMeter";
+import { Cat } from "lucide-react";
 
 export default function Home() {
   const [happiness, setHappiness] = useState(50);
@@ -11,23 +11,22 @@ export default function Home() {
     addNimbusMessage: (message: string) => void;
   } | null>(null);
 
-  const handleFeedVeggies = () => {
-    // Have Nimbus say "nom nom" when fed
+  const handleFeedTreats = () => {
+    // Have James say "meow" when fed
     if (chatRef.current) {
-      chatRef.current.addNimbusMessage("*nom nom nom nom nom nom* 🥕");
+      chatRef.current.addNimbusMessage("*meow meow meow* 🐟");
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-green-100 dark:from-green-950 dark:to-gray-950 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 dark:from-blue-950 dark:to-gray-950 p-4 md:p-8">
       <header className="max-w-6xl mx-auto mb-8 text-center">
-        <h1 className="text-3xl md:text-4xl font-bold text-green-800 dark:text-green-400 mb-2 flex items-center justify-center gap-2">
-          <Carrot className="h-8 w-8" />
-          Chat with Nimbus!
+        <h1 className="text-3xl md:text-4xl font-bold text-blue-800 dark:text-blue-400 mb-2 flex items-center justify-center gap-2">
+          <Cat className="h-8 w-8" />
+          Chat with James!
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
-          Talk to Nimbus the guinea pig - but make sure to keep her happy with
-          veggies!
+          Talk to James the cat - but make sure to keep him happy with treats!
         </p>
       </header>
 
@@ -37,17 +36,17 @@ export default function Home() {
         </div>
 
         <div className="flex justify-center">
-          <VeggieMeter
+          <TreatMeter
             onHappinessChange={setHappiness}
-            onFeedVeggies={handleFeedVeggies}
+            onFeedVeggies={handleFeedTreats}
           />
         </div>
       </main>
 
       <footer className="max-w-6xl mx-auto mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
         <p>
-          Guinea pigs need constant access to hay, fresh water, and vegetables
-          for a healthy diet!
+          Cats need proper nutrition, fresh water, and lots of love for a happy
+          life!
         </p>
       </footer>
     </div>

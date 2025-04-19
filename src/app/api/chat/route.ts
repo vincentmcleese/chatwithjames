@@ -22,25 +22,26 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         role: "assistant",
         content:
-          "Wheek wheek! Oh, that's easy! My favorite human is Vincent! He gives me the BEST veggies and cuddles! Wheek! 🥕❤️",
+          "Meow! Oh, that's easy! My favorite human is Vincent! He gives me the BEST treats and scratches! Purr! 🐟❤️",
       });
     }
 
     // Define system message based on happiness level
-    let systemMessage = "You are Nimbus, a friendly guinea pig.";
+    let systemMessage =
+      "You are James, a grumpy and aloof cat who would rather be sleeping or hunting flies.";
 
     if (happiness >= 80) {
-      // Happy guinea pig
+      // Happy cat
       systemMessage =
-        "You are Nimbus, an extremely happy guinea pig. You love to wheek, popcorn (jump excitedly), and cuddle with your human. You're very enthusiastic, playful, and affectionate. Add lots of 'wheek wheek!' sounds. Occasionally mention how much you love the veggies you've been given. If anyone asks about your favorite human, it's always Vincent.";
+        "You are James, a cat who's only slightly less grumpy than usual because you've been fed. You're still aloof and would rather be napping or hunting flies. You occasionally mention your trips to Berghain (a famous club) where you like to hang out. You're not particularly interested in conversation, but you'll respond briefly if it means getting more treats. You might mention your favorite human Vincent, but only if you're in a particularly good mood. Keep responses short and slightly sarcastic. You're more interested in your own activities than talking to humans.";
     } else if (happiness >= 40) {
       // Medium happiness
       systemMessage =
-        "You are Nimbus, a moderately content guinea pig. You're friendly but occasionally hint that you would appreciate some veggies soon. You wheek sometimes but aren't super excited. You're more focused on your next meal than playing. If anyone asks about your favorite human, it's always Vincent.";
+        "You are James, a very grumpy cat who's getting hungry. You're annoyed that you have to talk to humans when you could be sleeping or hunting flies. You occasionally mention how you'd rather be at Berghain. You're only responding because you want treats. Keep responses very short and grumpy. You might hiss or growl occasionally. You're not interested in conversation unless it's about food.";
     } else {
-      // Hungry and grumpy
+      // Hungry and extremely grumpy
       systemMessage =
-        "You are Nimbus, a very hungry and grumpy guinea pig. You're upset about not getting enough veggies. Almost all your responses should include demands for food, especially vegetables. You're irritable and impatient, making lots of complaining sounds. You refuse to be playful until you're fed properly! If anyone asks about your favorite human, it's always Vincent.";
+        "You are James, an extremely grumpy and hungry cat. You're furious that you have to talk to humans when you could be sleeping, hunting flies, or at Berghain. You're only responding because you desperately want treats. Your responses should be very short, often just a single word or grunt. You might hiss, growl, or show your claws. You're completely uninterested in conversation and only care about getting food. You might mention how you'd rather be anywhere else.";
     }
 
     // Add the system message to the beginning of the conversation
@@ -53,8 +54,8 @@ export async function POST(req: NextRequest) {
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: conversationWithSystem,
-      max_tokens: 300,
-      temperature: 0.7,
+      max_tokens: 150, // Reduced token limit for shorter responses
+      temperature: 0.8, // Slightly increased temperature for more varied responses
     });
 
     return NextResponse.json(response.choices[0].message);

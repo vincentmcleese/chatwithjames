@@ -9,7 +9,7 @@ import React, {
 } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Carrot, Send } from "lucide-react";
+import { Carrot, Send, Cat } from "lucide-react";
 
 interface Message {
   role: "user" | "assistant";
@@ -30,7 +30,7 @@ const Chat = forwardRef<ChatHandle, ChatProps>(({ happiness }, ref) => {
     {
       role: "assistant",
       content:
-        "Wheek wheek! Hi there, I'm Nimbus the guinea pig! I love veggies and cuddles! What would you like to talk about today?",
+        "*yawns* What do you want? I was just about to take a nap... If you have treats, I might consider talking to you. Otherwise, I'd rather be hunting flies or at Berghain.",
     },
   ]);
   const [input, setInput] = useState("");
@@ -44,10 +44,12 @@ const Chat = forwardRef<ChatHandle, ChatProps>(({ happiness }, ref) => {
     },
   }));
 
-  // Scroll to bottom when messages change
+  // Scroll to bottom when new messages are added
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    if (messages.length > 0) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages.length]);
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
@@ -91,7 +93,7 @@ const Chat = forwardRef<ChatHandle, ChatProps>(({ happiness }, ref) => {
         {
           role: "assistant",
           content:
-            "Wheek! Something went wrong. Maybe I need more veggies to think clearly!",
+            "Meow! Something went wrong. Maybe I need more treats to think clearly!",
         },
       ]);
     } finally {
@@ -101,21 +103,21 @@ const Chat = forwardRef<ChatHandle, ChatProps>(({ happiness }, ref) => {
 
   return (
     <div className="flex flex-col h-full bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden border">
-      <div className="p-4 border-b flex items-center gap-3 bg-green-50 dark:bg-green-950">
+      <div className="p-4 border-b flex items-center gap-3 bg-blue-50 dark:bg-blue-950">
         <Avatar className="h-10 w-10">
-          <AvatarImage src="/nimbus.png" alt="Nimbus the Guinea Pig" />
+          <AvatarImage src="/james.jpeg" alt="James the Cat" />
           <AvatarFallback>
-            <Carrot className="h-6 w-6 text-green-500" />
+            <Cat className="h-6 w-6 text-blue-500" />
           </AvatarFallback>
         </Avatar>
         <div>
-          <h3 className="font-bold">Nimbus the Guinea Pig</h3>
+          <h3 className="font-bold">James the Cat</h3>
           <p className="text-xs text-gray-500 dark:text-gray-400">
             {happiness >= 80
               ? "Very happy and ready to chat!"
               : happiness >= 40
               ? "Getting a bit hungry..."
-              : "Really needs some veggies...NOW!"}
+              : "Really needs some treats...NOW!"}
           </p>
         </div>
       </div>
@@ -138,12 +140,12 @@ const Chat = forwardRef<ChatHandle, ChatProps>(({ happiness }, ref) => {
               {message.role === "assistant" && (
                 <div className="flex items-center gap-2 mb-1">
                   <Avatar className="h-6 w-6">
-                    <AvatarImage src="/nimbus.png" alt="Nimbus" />
+                    <AvatarImage src="/james.jpeg" alt="James" />
                     <AvatarFallback>
-                      <Carrot className="h-4 w-4 text-green-500" />
+                      <Cat className="h-4 w-4 text-blue-500" />
                     </AvatarFallback>
                   </Avatar>
-                  <span className="font-bold text-xs">Nimbus</span>
+                  <span className="font-bold text-xs">James</span>
                 </div>
               )}
               <p className="whitespace-pre-wrap text-sm">{message.content}</p>
@@ -157,12 +159,12 @@ const Chat = forwardRef<ChatHandle, ChatProps>(({ happiness }, ref) => {
             <div className="max-w-[80%] p-3 rounded-lg bg-green-100 dark:bg-green-900 text-green-900 dark:text-green-100 rounded-tl-none">
               <div className="flex items-center gap-2 mb-1">
                 <Avatar className="h-6 w-6">
-                  <AvatarImage src="/nimbus.png" alt="Nimbus" />
+                  <AvatarImage src="/james.jpeg" alt="James" />
                   <AvatarFallback>
-                    <Carrot className="h-4 w-4 text-green-500" />
+                    <Cat className="h-4 w-4 text-blue-500" />
                   </AvatarFallback>
                 </Avatar>
-                <span className="font-bold text-xs">Nimbus</span>
+                <span className="font-bold text-xs">James</span>
               </div>
               <div className="flex space-x-1">
                 <div
@@ -188,7 +190,7 @@ const Chat = forwardRef<ChatHandle, ChatProps>(({ happiness }, ref) => {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Say something to Nimbus..."
+          placeholder="Say something to James..."
           className="flex-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-800 dark:border-gray-700"
           disabled={isLoading}
         />
