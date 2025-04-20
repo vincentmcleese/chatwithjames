@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Fish, Cat } from "lucide-react";
+import { Fish, Cat, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface TreatMeterProps {
@@ -21,6 +21,7 @@ export default function TreatMeter({
   const [showTreat, setShowTreat] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioError, setAudioError] = useState<string | null>(null);
+  const [loadingProgress, setLoadingProgress] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -30,8 +31,28 @@ export default function TreatMeter({
     // Check if browser supports FLAC
     const canPlayFlac = audio.canPlayType("audio/flac");
     if (canPlayFlac === "probably" || canPlayFlac === "maybe") {
-      audioRef.current = new Audio("/berghain.flac");
-      audioRef.current.volume = 0.5; // Set volume to 50%
+      const audioElement = new Audio("/berghain.flac");
+      audioElement.volume = 0.5; // Set volume to 50%
+
+      // Track loading progress
+      audioElement.addEventListener("progress", (e) => {
+        if (e.target instanceof HTMLAudioElement) {
+          const progress =
+            e.target.buffered.length > 0
+              ? (e.target.buffered.end(e.target.buffered.length - 1) /
+                  e.target.duration) *
+                100
+              : 0;
+          setLoadingProgress(Math.round(progress));
+        }
+      });
+
+      // Handle when audio is ready to play
+      audioElement.addEventListener("canplaythrough", () => {
+        setLoadingProgress(100);
+      });
+
+      audioRef.current = audioElement;
     } else {
       setAudioError(
         "Your browser doesn't support FLAC format. Please use a modern browser."
@@ -153,10 +174,19 @@ export default function TreatMeter({
       <Button
         type="button"
         onClick={handleBerghain}
-        className="bg-black hover:bg-gray-900 gap-2 transition-transform duration-200 active:scale-95"
-        disabled={!!audioError}
+        className="bg-black hover:bg-gray-900 text-white gap-2 transition-transform duration-200 active:scale-95"
+        disabled={!!audioError || loadingProgress < 100}
       >
-        {isPlaying ? "Stop Techno" : "Go to Berghain"}
+        {loadingProgress < 100 ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" />
+            Queuing for Berghain ({loadingProgress}%)
+          </>
+        ) : isPlaying ? (
+          "Stop Techno"
+        ) : (
+          "Go to Berghain"
+        )}
       </Button>
 
       {audioError && (
